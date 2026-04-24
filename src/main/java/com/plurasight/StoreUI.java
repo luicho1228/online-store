@@ -23,17 +23,29 @@ public class StoreUI {
         System.out.println("1.Display Products" +
                 "\n2.Display Cart" +
                 "\n3.Exit - closes out of the application");
+        System.out.print("Enter command: ");
     }
     public void displayProductMenu(Inventory inventory){
         System.out.println("=====PRODUCT MENU=====");
         ArrayList<Product> productList = inventory.getInventoryArray();
-        displayProductsInArray(productList);
+        if (productList.isEmpty()){
+            System.err.println("Inventory is Empty!");
+            System.out.print(yellowTextColor + "Enter 0 to go back to Home Menu\n" + blueTextColor);
+        }else {
+            displayProductsInArray(productList);
+        }
 
     }
     public void displayCart(Cart cart){
         System.out.println("=====MY CART=====");
         ArrayList<Product> cartProductList = cart.getAllProductsInCarts();
-        displayProductsInArray(cartProductList);
+        if(cartProductList.isEmpty()){
+            System.err.println("Cart is Empty!");
+            System.out.print(yellowTextColor + "Enter 0 to go back to Home Menu\n" + blueTextColor);
+
+        }else {
+            displayProductsInArray(cartProductList);
+        }
     }
     public void displayProductsInArray(ArrayList<Product> productList){
         int itemIndex = 0;
@@ -41,9 +53,6 @@ public class StoreUI {
             System.out.println(itemIndex +"."+product);
             itemIndex++;
         }
-        displayExitOptions();
-    }
-    public void displayExitOptions(){
         System.out.print(yellowTextColor + "Enter 0 to go back to Home Menu\n" + blueTextColor);
     }
     public static void pauseThread(int seconds){
