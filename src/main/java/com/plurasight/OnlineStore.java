@@ -9,14 +9,16 @@ import java.util.Scanner;
 public class OnlineStore {
 
     private static Scanner scanner = new Scanner(System.in);
+    private static Inventory inventory;
+    private static Cart cart = new Cart();
+    private static StoreUI ui = new StoreUI();
     public static void main(String[] args) {
         startOnlineStore();
     }
 
     public static void startOnlineStore(){
-        Inventory inventory = loadInventory();
-        Cart cart = new Cart();
-        StoreUI ui = new StoreUI();
+        inventory = loadInventory();
+
         boolean running = true;
         do {
             ui.mainMenuInit();
@@ -27,7 +29,14 @@ public class OnlineStore {
                     ui.displayProductMenu(inventory);
                     userInput = scanner.nextInt();
                     scanner.nextLine();
-
+                    if(userInput == 1){
+                        ui.displaySearchOptions();
+                        Product retreavedProduct = searchProduct(userInput);
+                        ui.displayProduct(retreavedProduct);
+                    }
+                    else if (userInput == 2) {}
+                    else if (userInput == 3) {}
+                    else{ui.displaySelectionErrorPrompt();}
                     break;
                 case 2:
                     ui.displayCart(cart);
@@ -35,15 +44,35 @@ public class OnlineStore {
                     scanner.nextLine();
                     break;
                 case 3:
-                    System.out.println("Thank you, I'll see you soon!");
+                    ui.displayGoodByes();
                     running = false;
                         break;
                 default:
-                    System.err.println("Please select from the options available in the menu");
+                    ui.displaySelectionErrorPrompt();
                     break;
             }
-
         }while (running);
+    }
+
+    private static Product searchProduct(int userInput){
+        Product retreavedProduct = null;
+        userInput = scanner.nextInt();
+        scanner.nextLine();
+        if (userInput == 1){
+            ui.displaySearchPrompts(userInput);
+            String inputName = scanner.nextLine();
+            retreavedProduct = inventory.getProductByName(inputName);
+        } else if (userInput == 2) {
+            ui.displaySearchPrompts(userInput);
+            userInput = scanner.nextInt();
+            scanner.nextLine();
+            retreavedProduct = inventory.getProductByPrice(userInput);
+        }else if (userInput == 3){
+            ui.displaySearchPrompts(userInput);
+            String inputDepartment = scanner.nextLine();
+            retreavedProduct = inventory.getProductByDepartment(inputDepartment);
+        }
+        return retreavedProduct;
     }
 
     private static Inventory loadInventory(){
@@ -65,13 +94,17 @@ public class OnlineStore {
                    }
                    i++;
                }catch (IndexOutOfBoundsException iob){
-                   System.err.println("ERROR: could not load the data from the file: " + fileName);
+                   ui.displayLoadFileError(fileName);
                }
             }bufferedReader.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return inventory;
+    }
+
+    public void searchItem(){
+
     }
 
 }
