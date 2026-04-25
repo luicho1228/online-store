@@ -27,24 +27,57 @@ public class OnlineStore {
             scanner.nextLine();
             switch (userInput){
                 case 1:
+                    //Display inventory and options 1.Search, 2.Add to cart, 3. Go back to main menu
                     ui.displayProductMenu(inventory);
                     userInput = scanner.nextInt();
                     scanner.nextLine();
                     if(userInput == 1){
-                        ui.displaySearchOptions();
-                        Product retreavedProduct = searchProduct(userInput);
-                        ui.displayProduct(retreavedProduct);
-                        ui.displayBackToMenuOption();
-                        userInput = scanner.nextInt();
-                        scanner.nextLine();
+                        do {
+                            //displays search options 1.search by name, 2. search by price, 3. search by department
+                            ui.displaySearchOptions();
+                            Product retreavedProduct = searchProduct(userInput);
+                            ui.displayProduct(retreavedProduct);
+                            System.out.println("\n1.Add product to cart!");
+                            ui.displayBackToMenuOption();
+                            userInput = scanner.nextInt();
+                            scanner.nextLine();
+                            if (userInput == 1) {
+                                cart.addToCart(retreavedProduct);
+                                ui.displayAddedProductPop(retreavedProduct);
+                            } else if (userInput > 1 || userInput < 0) {
+                                ui.displaySelectionErrorPrompt();
+                            }
+                        }while (userInput < 0 || userInput > 1);
                     }
                     else if (userInput == 2) {
-
+                        //displays add product ui giving the options: "1.enter product sku or 2.search product"
+                        ui.displayAddProductUI();
+                        userInput = scanner.nextInt();
+                        scanner.nextLine();
+                        Product retreavedProduct = null;
+                        if (userInput == 1){
+                            //enter sku ui and prompt
+                            ui.displayEnterSkuPrompt();
+                            String userInputString = scanner.nextLine();
+                            retreavedProduct= searchProductBySku(userInputString);
+                            cart.addToCart(retreavedProduct);
+                        } else if (userInput == 2) {
+                            //display search ui
+                            ui.displaySearchOptions();
+                            retreavedProduct = searchProduct(userInput);
+                            cart.addToCart(retreavedProduct);
+                            ui.displayProduct(retreavedProduct);
+                            ui.displayBackToMenuOption();
+                            userInput = scanner.nextInt();
+                            scanner.nextLine();
+                        }
+                        ui.displayAddedProductPop(retreavedProduct);
                     }
                     else if (userInput == 3) {}
                     else{ui.displaySelectionErrorPrompt();}
                     break;
                 case 2:
+                    //displays the options 1. check out, 2.remove product, 3.go back to main menu
                     ui.displayCart(cart);
                     userInput = scanner.nextInt();
                     scanner.nextLine();
@@ -60,21 +93,29 @@ public class OnlineStore {
         }while (running);
     }
 
+    private static Product searchProductBySku(String sku){
+        Product retreavedProduct = inventory.getProductBySku(sku);
+        return  retreavedProduct;
+    }
+
     //This method implements the ui and logic of the search feature in the app. Returning the desired product to be searched
     private static Product searchProduct(int userInput){
         Product retreavedProduct = null;
         userInput = scanner.nextInt();
         scanner.nextLine();
         if (userInput == 1){
+            //display the user the prompt "Enter name of product"
             ui.displaySearchPrompts(userInput);
             String inputName = scanner.nextLine();
             retreavedProduct = inventory.getProductByName(inputName);
         } else if (userInput == 2) {
+            //display the user the prompt "Enter price of product"
             ui.displaySearchPrompts(userInput);
             Double userInputDouble = scanner.nextDouble();
             scanner.nextLine();
             retreavedProduct = inventory.getProductByPrice(userInputDouble);
         }else if (userInput == 3){
+            //display the user the prompt "Enter department of product"
             ui.displaySearchPrompts(userInput);
             String inputDepartment = scanner.nextLine();
             retreavedProduct = inventory.getProductByDepartment(inputDepartment);

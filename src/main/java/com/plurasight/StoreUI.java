@@ -18,7 +18,7 @@ public class StoreUI {
         yellowTextColor ="\u001B[33m";
         resetTextColor = "\u001B[0m";
         greenTextColor = "\u001B[32m";
-        productDetailsTitle = "\t|" + "\t\tSKU | Product Name | Price | Department " + "|";
+        productDetailsTitle = "\t|" + "\tSKU | Product Name | Price | Department " + "|";
         initializeOnlineStore();
     }
 
@@ -72,6 +72,11 @@ public class StoreUI {
             displayBackToMenuOption();
         }else {
             displayProductsInArray(cartProductList);
+            displayDivider(50);
+            System.out.println("\n\t1.Check Out " +
+                    "\n\t2.Remove Product " +
+                    "\n\t3.Go Back to Main Menu");
+            System.out.print("\n" + yellowTextColor + "Enter Command: " + blueTextColor);
         }
     }
 
@@ -81,7 +86,7 @@ public class StoreUI {
                 "\n\t1.Search by Name " +
                 "\n\t2.Search by Price " +
                 "\n\t3.Search by Department");
-        System.out.print("\n" + yellowTextColor + "Enter Command: " + blueTextColor);
+        System.out.print(yellowTextColor + "Enter Command: " + blueTextColor);
     }
 
 
@@ -98,8 +103,19 @@ public class StoreUI {
         }
     }
 
-    public void displayAddProductUI(){}
+    public void displayAddProductUI(){
+        displayTitle("ADD PRODUCT");
+        System.out.println("Select an option: ");
+        System.out.print("\n\t1.Enter product SKU " +
+                "\n\t2.Search Product " +
+                yellowTextColor + "\nEnter command: " + blueTextColor);
+    }
 
+    public void displayEnterSkuPrompt(){
+        System.out.print("Enter product's SKU:"
+                + yellowTextColor + "\nEnter command: " + blueTextColor);
+
+    }
 
     //-------------------------------------------------------------------------------
     //These methods display a product or a list of products from the inventory class
@@ -148,6 +164,9 @@ public class StoreUI {
         }System.out.println(titleDisplay + "\n");
     }
 
+    public void displayAddedProductPop(Product addedProduct){
+        System.out.println("The product " + addedProduct.getName() + " has been added to your cart!");
+    }
     public void displayBackToMenuOption(){
         displayDivider(50);
         System.out.print(yellowTextColor + "Enter 0 to go back to Home Menu\n" + blueTextColor);
