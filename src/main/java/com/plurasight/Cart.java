@@ -2,6 +2,7 @@ package com.plurasight;
 
 import java.util.ArrayList;
 
+//This class represents the user's cart object
 public class Cart {
     private Inventory cartInventory;
     private boolean isEmpty = true;

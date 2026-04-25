@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
+//This class manages the logic and user input of the app
 public class OnlineStore {
 
     private static Scanner scanner = new Scanner(System.in);
@@ -16,9 +17,9 @@ public class OnlineStore {
         startOnlineStore();
     }
 
+    //This method initialize the app and manages the main menu logic and UI;
     public static void startOnlineStore(){
         inventory = loadInventory();
-
         boolean running = true;
         do {
             ui.mainMenuInit();
@@ -33,8 +34,13 @@ public class OnlineStore {
                         ui.displaySearchOptions();
                         Product retreavedProduct = searchProduct(userInput);
                         ui.displayProduct(retreavedProduct);
+                        ui.displayBackToMenuOption();
+                        userInput = scanner.nextInt();
+                        scanner.nextLine();
                     }
-                    else if (userInput == 2) {}
+                    else if (userInput == 2) {
+
+                    }
                     else if (userInput == 3) {}
                     else{ui.displaySelectionErrorPrompt();}
                     break;
@@ -54,6 +60,7 @@ public class OnlineStore {
         }while (running);
     }
 
+    //This method implements the ui and logic of the search feature in the app. Returning the desired product to be searched
     private static Product searchProduct(int userInput){
         Product retreavedProduct = null;
         userInput = scanner.nextInt();
@@ -64,9 +71,9 @@ public class OnlineStore {
             retreavedProduct = inventory.getProductByName(inputName);
         } else if (userInput == 2) {
             ui.displaySearchPrompts(userInput);
-            userInput = scanner.nextInt();
+            Double userInputDouble = scanner.nextDouble();
             scanner.nextLine();
-            retreavedProduct = inventory.getProductByPrice(userInput);
+            retreavedProduct = inventory.getProductByPrice(userInputDouble);
         }else if (userInput == 3){
             ui.displaySearchPrompts(userInput);
             String inputDepartment = scanner.nextLine();
@@ -75,6 +82,7 @@ public class OnlineStore {
         return retreavedProduct;
     }
 
+    //This method loads the inventory class and fill it up with products data retrieved from the product.csv file
     private static Inventory loadInventory(){
         Inventory inventory = new Inventory();
         String fileName ="products.csv";
@@ -102,9 +110,4 @@ public class OnlineStore {
         }
         return inventory;
     }
-
-    public void searchItem(){
-
-    }
-
 }
